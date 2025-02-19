@@ -15,7 +15,7 @@ export const generateCSS = async(metadata, fontName, outputFolder) => {
     font-family: '${fontName}';
     src: url('${outputFontFileWoff2Url}') format('woff2'), url('${outputFontFileWoffUrl}') format('woff');
 }
-[class^="${classPrefix}"], [class*=" ${classPrefix}"] {
+#acym_wrapper [class^="${classPrefix}"], #acym_wrapper [class*=" ${classPrefix}"] {
     font-family: '${fontName}';
     font-style: normal;
     font-weight: normal;
