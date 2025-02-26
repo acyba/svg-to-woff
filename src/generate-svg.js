@@ -46,13 +46,31 @@ export const generateFonts = async(fontName, outputFolder) => {
 
         const files = await fs.readdir(iconsDirectory);
 
+        const assignedCodes = new Map(); // Stores filePath -> Unicode mapping
+        const usedUnicodes = new Set();  // Tracks assigned Unicode values
+
         const createUniqueUnicode = (filePath) => {
+            if (assignedCodes.has(filePath)) {
+                return assignedCodes.get(filePath); // Return previously assigned code
+            }
+
             let hash = 0;
             for (let i = 0; i < filePath.length; i++) {
                 hash = (hash * 31 + filePath.charCodeAt(i)) >>> 0;
             }
 
-            return String.fromCharCode(0xe000 + (hash % 1000));
+            let unicode = 0xe000 + (hash % 0x1900); // Use range 0xe000 - 0xf8ff
+
+            // Ensure uniqueness by finding the next available code
+            while (usedUnicodes.has(unicode)) {
+                unicode = unicode < 0xf8ff ? unicode + 1 : 0xe000; // Wrap around if needed
+            }
+
+            // Store and mark as used
+            assignedCodes.set(filePath, String.fromCharCode(unicode));
+            usedUnicodes.add(unicode);
+
+            return String.fromCharCode(unicode);
         };
 
         for (const file of files) {
