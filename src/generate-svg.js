@@ -5,13 +5,8 @@ import {SVGIcons2SVGFontStream} from 'svgicons2svgfont';
 import svg2ttf from 'svg2ttf';
 import ttf2woff from 'ttf2woff';
 import ttf2woff2 from 'ttf2woff2';
-import {deleteIconFolder} from './unzip.js';
 
-
-const iconsDirectory = './icons';
-
-
-export const generateFonts = async(fontName, outputFolder) => {
+export const generateFonts = async(fontName, svgFolderPath, outputFolder) => {
     const outputFontFile = `${outputFolder}/${fontName}.svg`;
     const outputTTFFile = `${outputFolder}/${fontName}.ttf`;
     const outputWOFFFile = `${outputFolder}/${fontName}.woff`;
@@ -44,7 +39,7 @@ export const generateFonts = async(fontName, outputFolder) => {
 
         const glyphMetadata = [];
 
-        const files = await fs.readdir(iconsDirectory);
+        const files = await fs.readdir(svgFolderPath);
 
         const assignedCodes = new Map(); // Stores filePath -> Unicode mapping
         const usedUnicodes = new Set();  // Tracks assigned Unicode values
@@ -75,7 +70,7 @@ export const generateFonts = async(fontName, outputFolder) => {
 
         for (const file of files) {
             if (path.extname(file) === '.svg') {
-                const filePath = path.join(iconsDirectory, file);
+                const filePath = path.join(svgFolderPath, file);
                 const glyphName = path.basename(file, '.svg');
                 const unicode = createUniqueUnicode(filePath);
 
@@ -135,7 +130,6 @@ export const generateFonts = async(fontName, outputFolder) => {
                 // File does not exist
             }
         }
-        await deleteIconFolder();
 
         return glyphMetadata;
     } catch (err) {

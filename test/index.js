@@ -1,3 +1,3 @@
 import {generateIconFont} from '../index.js';
 
-await generateIconFont('icon', '../icons.zip');
+await generateIconFont('icon', './svg', './output');
