@@ -13,7 +13,7 @@
         "generate-icon-font": "./cli.js"
     },
     "name": "@acymailing/svg-to-woff",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
